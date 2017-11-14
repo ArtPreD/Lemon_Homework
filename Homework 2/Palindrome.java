@@ -11,9 +11,8 @@ public class Palindrome {
 
     private static void isPalindrome(String str) {
        String origin = str.replaceAll(" ", "").toLowerCase();
-        StringBuilder test = new StringBuilder(origin);
-        test.reverse();
-        String test2 = test.toString();
-        System.out.println((origin.equals(test2)) ? str + " - это палиндром!" : str + " - это не палиндром :(");
+       StringBuilder builder = new StringBuilder(origin);
+       String reverse = builder.reverse().toString();
+       System.out.println((origin.equals(reverse)) ? str + " - это палиндром!" : str + " - это не палиндром :(");
     }
 }
