@@ -29,25 +29,23 @@ public class DeleteSymbol {
             default:
                 System.out.println("Выбор не определен. Завершаю работу программы");
         }
-
     }
 
     private static String deleteAll(String str, String letter){
         String origin = str;
-        if (letter.length() != 1){
+        if (letter.length() == 1){
+            if (!(str.contains(letter.toUpperCase()) || str.contains(letter.toLowerCase()))){
+                System.out.printf("Такого символа в строке нет. Повторите попытку: ");
+                letter = userInputString();
+                origin = deleteAll(str, letter);
+            }
+        }else {
             System.out.printf("Это не один символ. Введите, пожалуйста, один символ: ");
             letter = userInputString();
-            deleteAll(str, letter);
-        }
-        if (!str.contains(letter)){
-            System.out.printf("Такого символа в строке нет. Повторите попытку: ");
-            letter = userInputString();
-            deleteAll(str, letter);
+            origin = deleteAll(str, letter);
         }
 
-        origin = origin.replaceAll(letter.toLowerCase(), "").replaceAll(letter.toUpperCase(), "");
-
-        return origin;
+        return origin.replaceAll(letter.toLowerCase(), "").replaceAll(letter.toUpperCase(), "");
     }
 
     private static String deleteSymbol(String str, int i) {
