@@ -13,6 +13,7 @@ public class ParsingDir {
             scanDir(stream, getList(path), path);
             System.out.println("\n" + "Parsing end successful. All data write to file.");
         }catch (IOException e){
+            e.printStackTrace();
         }
     }
 
