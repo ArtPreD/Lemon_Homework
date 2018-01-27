@@ -1,23 +1,23 @@
 import java.io.*;
+import java.util.ArrayList;
 
-public class ParsingDir {
+public class IOFileList {
 
-    private static final String path = "D:\\Java Projects";
-    private static final String outPath = "FileList.txt";
+    private static final String path = "D:\\Download\\Mega";
+    private static final String outPath = "NewFileList.txt";
+
+    private static ArrayList<String> fileListString;
 
     private static File file;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
+        fileListString = new ArrayList();
         System.out.println("Start parsing directory: " + path + "\n");
-        try(FileOutputStream stream = new FileOutputStream(getFile())) {
-            scanDir(stream, getList(path), path);
-            System.out.println("\n" + "Parsing end successful. All data write to file.");
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+        scanDir(getList(path), path);
+        writeInFile(fileListString);
     }
 
-    private static File[] getList(String path){
+    private static File[] getList(String path) {
         file = new File(path);
         File[] fileArr = file.listFiles();
         return fileArr;
@@ -28,32 +28,36 @@ public class ParsingDir {
         try {
             file = new File(outPath);
             if (!file.exists()) {
-                System.out.println("File not exists");
-                System.out.println();
-                System.out.println("Create file");
-                System.out.println();
                 file.createNewFile();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return file;
     }
 
-    private static void scanDir (FileOutputStream stream, File[] filesList, String path) throws IOException{
-        for (File file : filesList){
-            if (file.isDirectory()){
-                scanDir(stream, getList(path + "/" + file.getName()), path + "/" + file.getName());
-            }else {
+    private static void scanDir(File[] filesList, String path) throws IOException {
+        for (File file : filesList) {
+            if (file.isDirectory()) {
+                scanDir(getList(path + "/" + file.getName()), path + "/" + file.getName());
+            } else {
                 System.out.println(file);
-                writeInFile(stream, file.toString());
+                fileListString.add(file.toString());
             }
         }
     }
 
-    private static void writeInFile(FileOutputStream stream, String string) throws IOException{
-            byte[] stringInBytes = (string + "\n").getBytes();
-            stream.write(stringInBytes);
+    private static void writeInFile(ArrayList fileList) throws IOException {
+        try (FileOutputStream stream = new FileOutputStream(getFile())){
+            fileList.forEach(string -> {
+                try {
+                    stream.write((string + "\n").getBytes());
+                } catch (IOException e) {
+                    System.out.println("error in lambda body");
+                    e.printStackTrace();
+                }
+            });
+        }
+        System.out.println("\n" + "Parsing end successful. All data write to file.");
     }
 }
