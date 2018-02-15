@@ -16,33 +16,15 @@ School Tasks
 4. Учет ходов.
 
 
-public class XOField {
+public class Reflection {
 
-	private String winCombination = "123,456,789,147,258,369,159,357";
-  
-	public String getWinCombination() {
-		return winCombination;
-	}
+    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException {
+        final String hello = "hello";
+
+        Field value = String.class.getDeclaredField("value");
+        value.setAccessible(true);
+        value.set(hello, "Накуся выкуси".toCharArray());
+
+        System.out.println(hello);
+    }
 }
-
-
-	public class App {
-		
-		public static void main(String[] args) {
-		
-			String first = "123";
-			String second = "169";
-			
-			System.out.println("Do you win?");
-			System.out.println("Ansver: " + isWin(first));
-			System.out.println("And now?");
-			System.out.println("Ansver: " + isWin(second));
-			
-		}
-	
-		private static boolean isWin(String combination) {
-			XOField field = new XOField();
-			boolean isWin = field.getWinCombination().contains(combination);
-			return isWin;
-		}
-		
